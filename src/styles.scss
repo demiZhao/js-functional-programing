@@ -21,13 +21,14 @@
   background: #ccc;
 
   .clock-settings {
+    color: inherit;
     margin: 2em;
     input {
       display: inline-block;
-      width: 3em;
+      width: 1.5em;
       font-size: inherit;
       padding: 3px;
-      margin: 3px;
+      margin: 3px 6px 3px 3px;
     }
 
     .error {

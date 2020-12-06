@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useTimeContext } from "./app";
+import { useRef, useState, useContext, memo } from "react";
+import { TimeContext } from "./app";
 
 const formatTime = (time) => {
   return time < 10 ? `0${time}` : time;
@@ -21,8 +21,8 @@ const getHhmmss = (time) => {
   return { hours, minutes, seconds };
 };
 
-const ClockSetting = () => {
-  const { setTime } = useTimeContext();
+const ClockSetting = memo(({title, setTime }) => {
+  console.log('Clocksetting rendered')
 
   const [error, setError] = useState(null);
   const hasError = (hh, mm, ss) => isNaN(hh) || isNaN(mm) || isNaN(ss);
@@ -38,6 +38,8 @@ const ClockSetting = () => {
   };
 
   const handleClick = () => {
+    setError(null);
+
     const hours = hhRef.current.value;
     const minutes = mmRef.current.value;
     const seconds = ssRef.current.value;
@@ -45,7 +47,6 @@ const ClockSetting = () => {
     if (hasError(hours, minutes, seconds)) {
       setError("Error! Please enter number.");
     } else {
-      setError(null);
       setTime(getTime({ hours, minutes, seconds }));
       reset();
     }
@@ -55,54 +56,58 @@ const ClockSetting = () => {
     <div className={"clock-settings"}>
       {error && <div className={"error"}>{error}</div>}
       <div>
+        <label htmlFor={`${title}hh`}>{'hh:'}</label>
         <input
           ref={hhRef}
           type="text"
-          name="hh"
-          placeholder="hh"
+          id={`${title}hh`}
           maxLength="2"
+          data-testid="hh"
         />
-        {":"}
+        <label htmlFor={`${title}mm`}>{'mm:'}</label>
         <input
           ref={mmRef}
           type="text"
-          name="mm"
-          placeholder="mm"
+          id={`${title}mm`}
           maxLength="2"
+          data-testid="mm"
         />
-        {":"}
+        <label htmlFor={`${title}ss`}>{'ss:'}</label>
         <input
           ref={ssRef}
           type="text"
-          name="ss"
-          placeholder="ss"
+          id={`${title}ss`}
           maxLength="2"
+          data-testid="ss"
         />
-        <button className={"btn-primary"} onClick={handleClick}>
+        <button data-testid="btn" className={"btn-primary"} onClick={handleClick}>
           Set
         </button>
       </div>
     </div>
   );
-};
+})
 
 const DigitalClock = ({ title }) => {
-  const { time } = useTimeContext();
+  console.log('DigitalClock rendered')
+
+  const { time, setTime } = useContext(TimeContext);
   const { hours, minutes, seconds } = getHhmmss(time);
 
   return (
     <div className={"clock"}>
       <h3>{title}</h3>
       <div className={"digital-clock"}>
-        {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)}
+        <span data-testid="time">{formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)}</span>
       </div>
-      <ClockSetting />
+      <ClockSetting setTime={setTime} title={title}/>
     </div>
   );
 };
 
 const AnalogClock = ({ title }) => {
-  const { time } = useTimeContext();
+  console.log('AnalogClock rendered')
+  const { time, setTime } = useContext(TimeContext);
   const { hours, minutes, seconds } = getHhmmss(time);
 
   const secondsStyle = {
@@ -123,7 +128,7 @@ const AnalogClock = ({ title }) => {
         <div className={"dial minutes"} style={minutesStyle} />
         <div className={"dial hours"} style={hoursStyle} />
       </div>
-      <ClockSetting />
+      <ClockSetting setTime={setTime} title={title} />
     </div>
   );
 };

@@ -1,11 +1,12 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect} from "react";
 import { DigitalClock, AnalogClock } from "./clock";
 import "./styles.scss";
 
 export const TimeContext = createContext();
-export const useTimeContext = () => useContext(TimeContext);
 
 const App = () => {
+  console.log('App rendered')
+
   const initTime = () => new Date().getTime();
   const [time, setTime] = useState(initTime());
 
