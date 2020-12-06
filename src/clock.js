@@ -22,7 +22,7 @@ const getHhmmss = (time) => {
 };
 
 const ClockSetting = memo(({title, setTime }) => {
-  console.log('Clocksetting rendered')
+  console.log(`  <ClockSetting> rendered`)
 
   const [error, setError] = useState(null);
   const hasError = (hh, mm, ss) => isNaN(hh) || isNaN(mm) || isNaN(ss);
@@ -89,7 +89,7 @@ const ClockSetting = memo(({title, setTime }) => {
 })
 
 const DigitalClock = ({ title }) => {
-  console.log('DigitalClock rendered')
+  console.log(` <DigitalClock> rendered`)
 
   const { time, setTime } = useContext(TimeContext);
   const { hours, minutes, seconds } = getHhmmss(time);
@@ -106,7 +106,8 @@ const DigitalClock = ({ title }) => {
 };
 
 const AnalogClock = ({ title }) => {
-  console.log('AnalogClock rendered')
+  console.log(` <AnalogClock> rendered`)
+
   const { time, setTime } = useContext(TimeContext);
   const { hours, minutes, seconds } = getHhmmss(time);
 

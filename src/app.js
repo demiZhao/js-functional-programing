@@ -5,8 +5,7 @@ import "./styles.scss";
 export const TimeContext = createContext();
 
 const App = () => {
-  console.log('App rendered')
-
+  console.log('<App> rendered')
   const initTime = () => new Date().getTime();
   const [time, setTime] = useState(initTime());
 
